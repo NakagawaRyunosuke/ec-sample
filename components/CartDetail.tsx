@@ -12,7 +12,6 @@ export const CartDetail = () => {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    "Access-Control-Allow-Origin": `${process.env.NEXT_PUBLIC_VERSEL_URL}/api/*`
                 },
                 body: JSON.stringify({
                     items: Object.entries(cartDetails ?? {}).map(([_id, detail]) => ({

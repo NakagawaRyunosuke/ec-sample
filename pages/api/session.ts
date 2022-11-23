@@ -37,6 +37,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         })
         
         if(!items) return res.redirect(301, session.url ?? "")
+        res.setHeader("Access-Control-Allow-Origin", `${process.env.NEXT_PUBLIC_VERSEL_URL}/api/*`)
         res.status(200).json({
             url: session.url
         })
