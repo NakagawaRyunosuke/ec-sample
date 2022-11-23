@@ -3,7 +3,8 @@ import { Stack, Card, ButtonGroup, Button } from "react-bootstrap"
 
 
 export const CartDetail = () => {
-    const { cartDetails, removeItem, incrementItem, decrementItem, formattedTotalPrice, clearCart } = useShoppingCart()
+    const { removeItem, incrementItem, decrementItem, formattedTotalPrice, clearCart, cartDetails } = useShoppingCart()
+   
     const checkout = async () => {
         try {
             const session = await fetch('http://localhost:3000/api/session', {
@@ -12,7 +13,7 @@ export const CartDetail = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    items: Object.entries(cartDetails).map(([_id, detail]) => ({
+                    items: Object.entries(cartDetails ?? {}).map(([_id, detail]) => ({
                         id: detail.id,
                         quantity: detail.quantity,
                     }))
@@ -25,7 +26,7 @@ export const CartDetail = () => {
     }
     return (
       <Stack gap={1}>
-            {Object.entries(cartDetails).map(([priceId, detail]) => {
+            {Object.entries(cartDetails ?? {}).map(([priceId, detail]) => {
                 return (
                     <Card key={priceId}>
                         <Card.Body>
