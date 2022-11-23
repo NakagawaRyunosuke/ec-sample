@@ -4,7 +4,7 @@ import { Stack, Card, ButtonGroup, Button } from "react-bootstrap"
 
 export const CartDetail = () => {
     const { removeItem, incrementItem, decrementItem, formattedTotalPrice, clearCart, cartDetails } = useShoppingCart()
-    const fetchUrl = "https://ec-sample-nr-nakagawaryunosuke.vercel.app/api/session"
+    const fetchUrl = "api/session"
 
     const checkout = async () => {
         try {
