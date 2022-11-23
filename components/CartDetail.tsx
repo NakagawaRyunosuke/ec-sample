@@ -4,10 +4,10 @@ import { Stack, Card, ButtonGroup, Button } from "react-bootstrap"
 
 export const CartDetail = () => {
     const { removeItem, incrementItem, decrementItem, formattedTotalPrice, clearCart, cartDetails } = useShoppingCart()
-   
+    const fetchUrl = `${process.env.NEXT_PUBLIC_VERSEL_URL}/api/session` ?? "http://localhost:3000/api/session" 
     const checkout = async () => {
         try {
-            const session = await fetch('http://localhost:3000/api/session', {
+            const session = await fetch(fetchUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
