@@ -1,12 +1,22 @@
 import {useShoppingCart} from 'use-shopping-cart'
 import { Stack, Card, ButtonGroup, Button } from "react-bootstrap"
+import { useRouter } from 'next/router'
 
 
 export const CartDetail = () => {
     const { removeItem, incrementItem, decrementItem, formattedTotalPrice, clearCart, cartDetails } = useShoppingCart()
     const fetchUrl = "api/session"
+    const router = useRouter()
 
     const checkout = async () => {
+        const items = Object.entries(cartDetails ?? {}).map(([_id, detail]) => ({
+            id: detail.id,
+            quantity: detail.quantity,
+        }))
+        if(items.length < 1){
+            alert("Cart is empty.")
+            return
+        }
         try {
             const session = await fetch(fetchUrl, {
                 method: 'POST',
@@ -14,13 +24,11 @@ export const CartDetail = () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    items: Object.entries(cartDetails ?? {}).map(([_id, detail]) => ({
-                        id: detail.id,
-                        quantity: detail.quantity,
-                    }))
-                })
+                    items: items
+                }),
             }).then(response => response.json())
-            window.open(session.url)
+            router.push(session.url)
+            
        } catch (e: any) {
            window.alert(e.message);
        }

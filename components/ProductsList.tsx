@@ -6,6 +6,7 @@ import CartDetail from "./CartDetail"
 
 const ProductsList: NextPage<Props> = ({products}) => {
     const {addItem} = useShoppingCart()
+
     return(
         <Container className="mb-3">
             <Row>
