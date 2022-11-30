@@ -3,9 +3,22 @@ import { Container, Row , Col, Image, Stack, Button } from "react-bootstrap"
 import type {Props} from "../pages/index"
 import {useShoppingCart} from "use-shopping-cart"
 import CartDetail from "./CartDetail"
+import { useState } from "react";
 
 const ProductsList: NextPage<Props> = ({products}) => {
     const {addItem} = useShoppingCart()
+    const [addFlag, setAddFlag] = useState(false)
+
+    const add = (id: string, name: string, unit_amount: number | null, currency: string, image: string) => {
+        addItem({
+            id: id,
+            name: name,
+            price: unit_amount!,
+            currency: currency,
+            image: image
+        })
+        setAddFlag(true)
+    }
 
     return(
         <Container className="mb-3">
@@ -39,18 +52,18 @@ const ProductsList: NextPage<Props> = ({products}) => {
                                     <dd>
                                         <form action="/api/session" method="POST">
                                             <input type='hidden' name='price' value={price.id}/>
-                                            <input type='hidden' name='quantity' value={1}/> 
+                                            <input type='hidden' name='quantity' value={1}/>
                                             <Button type='submit'>いますぐ注文する</Button>
                                         </form>
                                     </dd>
                                     <dd>
-                                        <Button onClick={() => addItem({
-                                            id: price.id,
-                                            name: product.name,
-                                            price: price.unit_amount!,
-                                            currency: price.currency,
-                                            image: product.images[0],
-                                        })}>カートに追加する</Button>
+                                        <Button onClick={() => add(
+                                            price.id,
+                                            product.name,
+                                            price.unit_amount!,
+                                            price.currency,
+                                            product.images[0],
+                                        )}>カートに追加する</Button>
                                     </dd>
                                     </dl>
                                 )

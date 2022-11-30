@@ -11,36 +11,36 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     try{
         const {price, quantity, items} = req.body
-        if(items.length < 1){
-            res.status(400).json({message: "Cart is empty."})
-        }else{
-            const lineItems = items
-            ? items.map((item: any) => ({
-                price: item.id,
-                quantity: item.quantity,
-                adjustable_quantity: {
-                    enabled: true,
-                }
-            }))
-            :[{
-                price,
-                quantity,
-                adjustable_quantity: {
-                    enabled: true,
-                    minimum: 1,
-                    maximum: 10,
-                }
-            }]
-            const session = await stripe.checkout.sessions.create({
-                payment_method_types: ["card"],
-                line_items: lineItems,
-                mode: "payment",
-                success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
-                cancel_url: `${req.headers.origin}`,
-            })
+        const lineItems = items
+        ? items.map((item: any) => ({
+            price: item.id,
+            quantity: item.quantity,
+            adjustable_quantity: {
+                enabled: true,
+            }
+        }))
+        :[{
+            price,
+            quantity,
+            adjustable_quantity: {
+                enabled: true,
+                minimum: 1,
+                maximum: 10,
+            }
+        }]
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+            line_items: lineItems,
+            mode: "payment",
+            success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${req.headers.origin}`,
+        })
+        if(items){
             res.status(200).json({
                 url: session.url
             })
+        }else{
+            res.redirect(301, session.url)
         }
     }catch (e: any) {
        console.log(e)
