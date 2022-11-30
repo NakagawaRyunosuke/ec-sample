@@ -33,15 +33,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             line_items: lineItems,
             mode: "payment",
             success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${req.headers.origin}`,
+            cancel_url: `${req.headers.origin}/cancel`,
         })
         if(items){
             res.status(200).json({
                 url: session.url
             })
         }else{
-            res.redirect(301, session.url)
+            res.redirect(301, session.url ?? "")
         }
+        
     }catch (e: any) {
        console.log(e)
        res.status(e.statusCode || 500).json({

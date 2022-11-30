@@ -3,11 +3,9 @@ import { Container, Row , Col, Image, Stack, Button } from "react-bootstrap"
 import type {Props} from "../pages/index"
 import {useShoppingCart} from "use-shopping-cart"
 import CartDetail from "./CartDetail"
-import { useState } from "react";
 
 const ProductsList: NextPage<Props> = ({products}) => {
     const {addItem} = useShoppingCart()
-    const [addFlag, setAddFlag] = useState(false)
 
     const add = (id: string, name: string, unit_amount: number | null, currency: string, image: string) => {
         addItem({
@@ -17,7 +15,6 @@ const ProductsList: NextPage<Props> = ({products}) => {
             currency: currency,
             image: image
         })
-        setAddFlag(true)
     }
 
     return(

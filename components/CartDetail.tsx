@@ -48,7 +48,8 @@ export const CartDetail = () => {
                     items: items
                 }),
             }).then(response => response.json())
-            router.push(session.url)
+            // router.push(session.url)
+            window.open(session.url)
        } catch (e: any) {
            window.alert(e.message);
        }
